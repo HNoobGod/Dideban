@@ -1,0 +1,14 @@
+name            = "Dideban";                        // Name of your mod
+author          = "HNoobGod";                        // Affects Arma 3 Launcher, when the mod are loaded as local
+logo            = "Image\Logo_128x128.paa";                    // Logo displayed in the main menu
+logoOver        = "Image\Logo_128x128.paa";             // When the mouse is over, in the main menu
+logoSmall       = "Image\Logo_64x64.paa";              // Display in creative lists, next to the entities added by the mod
+picture         = "Image\Logo_2048x1024.paa";              // Picture displayed from the expansions menu. Optimal size is 2048x1024
+tooltip         = "Dideban - Live map app on your phone";
+tooltipOwned    = "Dideban";                         // Tool tip displayed when the mouse is left over, in the main menu
+actionName      = "GitHub";
+action          = "https://github.com/HNoobGod/Dideban"; // <-- آدرس گیت‌هاب خودت رو اینجا بذار
+overview        = "Dideban streams your friendly units (players, AI, vehicles) and every map marker you see in game to a small local app, shown on a live web map in your browser, phone or tablet. You can also place and delete markers from the app and they appear in game. Enemy units are never collected.<br/><br/>This Workshop item includes everything: the in-game mod, the companion server and the web app. Open this item's Workshop folder (steamapps\workshop\content\107410\3824497242), run install.bat once (it sets up Python for the server and adds a Dideban shortcut to your desktop), then start the server from that shortcut and open http://localhost:8080 in your browser or on your phone.<br/><br/>Note: the mod is signed (servers: copy keys\HNoobGod_Dideban.bikey into your keys folder), but the extension DLL is not whitelisted by BattlEye yet, so BattlEye must be off.";
+hideName        = 0;                                 // Hide the extension name
+hidePicture     = 0;                                 // Hide the extension menu
+dlcColor[]      = { 0.23, 0.39, 0.30, 1 };           // Color used for DLC stripes and backgrounds (RGBA)

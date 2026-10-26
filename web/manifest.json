@@ -1,0 +1,9 @@
+{
+  "name": "Dideban",
+  "short_name": "Dideban",
+  "start_url": "./",
+  "display": "fullscreen",
+  "background_color": "#101316",
+  "theme_color": "#14181c",
+  "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

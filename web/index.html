@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#14181c">
+<title>Dideban</title>
+<link rel="icon" href="favicon.svg">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Dideban">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header id="topbar">
+    <button id="btn-panel" class="icon-btn" data-i18n-title="panel" data-i18n-aria="panel">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <span class="brand"><img src="favicon.svg" alt="" width="22" height="22"><span data-i18n="app.name"></span></span>
+    <div class="status">
+      <span id="conn-dot" class="dot"></span>
+      <span id="conn-text" data-i18n="connecting"></span>
+    </div>
+    <span id="world-name" class="world"></span>
+    <label class="map-pick" data-i18n-title="map.pick">
+      <select id="map-select" data-i18n-aria="map.pick"></select>
+    </label>
+    <span class="spacer"></span>
+    <div class="view-ctrls" id="view-ctrls">
+      <button class="dock-grip" id="view-grip" type="button" data-i18n-title="dock.move" data-i18n-aria="dock.move">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><circle cx="9" cy="6" r="1.4"/><circle cx="15" cy="6" r="1.4"/><circle cx="9" cy="12" r="1.4"/><circle cx="15" cy="12" r="1.4"/><circle cx="9" cy="18" r="1.4"/><circle cx="15" cy="18" r="1.4"/></svg>
+      </button>
+      <div class="seg small" id="dim-seg">
+        <button data-dim="2d" data-i18n="view.2d"></button>
+        <button data-dim="3d" data-i18n="view.3d"></button>
+      </div>
+      <div class="seg small" id="style-seg">
+        <button data-style="topo" data-i18n="style.topo_s" data-i18n-title="style.topo" data-i18n-aria="style.topo"></button>
+        <button data-style="sat" data-i18n="style.sat_s" data-i18n-title="style.sat" data-i18n-aria="style.sat"></button>
+        <button data-style="mix" data-i18n="style.mix_s" data-i18n-title="style.mix" data-i18n-aria="style.mix"></button>
+      </div>
+      <div class="seg small" id="orient-seg">
+        <button data-orient="north" data-i18n-title="orient.north" data-i18n-aria="orient.north">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l5 7h-3v11h-4V10H7z" fill="currentColor" stroke="none"/><text x="12" y="20.5" font-size="7" font-weight="bold" text-anchor="middle" fill="currentColor" stroke="none">N</text></svg>
+        </button>
+        <button data-orient="heading" data-i18n-title="orient.heading" data-i18n-aria="orient.heading">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4a8 8 0 1 1-5.6 2.3"/><path d="M4 3v4h4"/><path d="M12 8l3 6h-6z" fill="currentColor" stroke="none"/></svg>
+        </button>
+      </div>
+      <button class="dock-arrow" id="view-arrow" type="button" data-i18n-title="dock.toggle" data-i18n-aria="dock.toggle">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>
+      </button>
+    </div>
+    <button id="btn-arty" class="btn icon-label" type="button" aria-pressed="false" data-i18n-title="ar.title" data-i18n-aria="ar.title">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17h8l2-3"/><path d="M9 14l9-8"/><path d="M15.5 4.5l3 3"/><circle cx="6" cy="18.5" r="2"/><path d="M14 20h7"/></svg>
+      <span data-i18n="ar.btn"></span>
+    </button>
+    <button id="btn-ws" class="btn icon-label" type="button" aria-haspopup="true" aria-expanded="false" data-i18n-title="ws.title" data-i18n-aria="ws.title">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+      <span data-i18n="ws.btn"></span>
+    </button>
+    <button id="btn-gameview" class="icon-btn" data-i18n-title="cam.gameview" data-i18n-aria="cam.gameview">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M10 9l4 2-4 2z" fill="currentColor"/></svg>
+    </button>
+    <button id="btn-full" class="icon-btn" data-i18n-title="full.toggle" data-i18n-aria="full.toggle">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+    </button>
+    <button id="btn-hidebar" class="icon-btn" data-i18n-title="bar.hide" data-i18n-aria="bar.hide">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 15l6-6 6 6"/></svg>
+    </button>
+  </header>
+
+  <div id="main">
+    <aside id="panel">
+      <div class="panel-resize" id="panel-resize" data-i18n-title="panel.resize" aria-hidden="true"></div>
+      <div class="sheet-handle" id="sheet-handle" data-i18n-title="panel"></div>
+      <nav class="tabs" role="tablist">
+        <button data-tab="units" class="active" role="tab" aria-selected="true"><span data-i18n="tab.units"></span> <span id="count-units" class="count"></span></button>
+        <button data-tab="markers" role="tab" aria-selected="false"><span data-i18n="tab.markers"></span> <span id="count-markers" class="count"></span></button>
+        <button data-tab="layers" role="tab" aria-selected="false" data-i18n="tab.settings"></button>
+      </nav>
+      <div id="tab-units" class="tab active"><div id="units-list" class="list"></div></div>
+      <div id="tab-markers" class="tab"><div id="markers-list" class="list"></div></div>
+      <div id="tab-layers" class="tab">
+        <section class="box">
+          <h3 data-i18n="lang.title"></h3>
+          <div class="seg" id="lang-seg">
+            <button data-lang="en">English</button>
+            <button data-lang="fa">فارسی</button>
+          </div>
+        </section>
+        <section class="box">
+          <h3 data-i18n="style.title"></h3>
+          <p id="style-note" class="muted small"></p>
+          <label class="field"><span data-i18n="bright.title"></span>
+            <span class="range-row"><input id="bright" type="range" min="0.6" max="2" step="0.05" value="1"><output id="bright-val" dir="ltr"></output>
+              <button id="bright-reset" class="btn small-btn" type="button" data-i18n="bright.reset"></button></span>
+          </label>
+          <p class="muted small" data-i18n="orient.help"></p>
+        </section>
+        <section class="box">
+          <h3 data-i18n="rate.title"></h3>
+          <div class="seg" id="rate-seg">
+            <button data-rate="0.05" data-i18n="rate.20"></button>
+            <button data-rate="0.1" data-i18n="rate.10"></button>
+            <button data-rate="0.25" data-i18n="rate.4"></button>
+            <button data-rate="1" data-i18n="rate.1"></button>
+          </div>
+          <p class="muted small" data-i18n="rate.help"></p>
+        </section>
+        <section class="box">
+          <h3 data-i18n="grid.title"></h3>
+          <div class="seg" id="grid-seg">
+            <button data-digits="6" data-i18n="grid.6"></button>
+            <button data-digits="8" data-i18n="grid.8"></button>
+          </div>
+        </section>
+        <section class="box" id="arty-set"></section>
+        <section class="box">
+          <h3 data-i18n="thr.title"></h3>
+          <p class="muted small" data-i18n="thr.help"></p>
+          <label class="field"><span data-i18n="thr.magHigh"></span>
+            <input id="thr-mag-high" class="num" type="number" min="1" max="30" step="1" dir="ltr"></label>
+          <label class="field"><span data-i18n="thr.magLow"></span>
+            <input id="thr-mag-low" class="num" type="number" min="1" max="30" step="1" dir="ltr"></label>
+          <label class="field"><span data-i18n="thr.throwMin"></span>
+            <input id="thr-throw-min" class="num" type="number" min="1" max="30" step="1" dir="ltr"></label>
+        </section>
+        <section class="box">
+          <h3 data-i18n="sat.title"></h3>
+          <p id="sat-status" class="muted"></p>
+          <button id="btn-sat" class="btn primary wide" data-i18n="sat.button"></button>
+          <p class="muted small" data-i18n="sat.help"></p>
+        </section>
+        <section class="box">
+          <h3 data-i18n="topo.title"></h3>
+          <p id="terrain-status" class="muted"></p>
+          <div id="progress" class="progress" hidden><div class="bar"></div><span class="label"></span></div>
+          <button id="btn-export" class="btn wide" data-i18n="topo.button"></button>
+          <p class="muted small" data-i18n="topo.help"></p>
+        </section>
+        <section class="box" id="setup-box">
+          <h3 data-i18n="setup.title"></h3>
+          <p id="setup-remote" class="muted small" data-i18n="setup.local_only" hidden></p>
+          <div id="setup-form" hidden>
+            <label class="field"><span data-i18n="setup.arma"></span>
+              <input id="setup-arma" type="text" dir="ltr" autocomplete="off" spellcheck="false"></label>
+            <div class="acts-row">
+              <button id="setup-save" class="btn primary" type="button" data-i18n="setup.save"></button>
+            </div>
+            <div id="setup-status" class="setup-status"></div>
+            <p class="muted small" data-i18n-html="setup.launcher"></p>
+          </div>
+        </section>
+        <section class="box">
+          <h3 data-i18n="layers.title"></h3>
+          <label class="check"><input type="checkbox" data-layer="grid"> <span data-i18n="layer.grid"></span></label>
+          <label class="check"><input type="checkbox" data-layer="gridLabels"> <span data-i18n="layer.gridLabels"></span></label>
+          <label class="check"><input type="checkbox" data-layer="names"> <span data-i18n="layer.names"></span></label>
+          <label class="check"><input type="checkbox" data-layer="heights"> <span data-i18n="layer.heights"></span></label>
+          <label class="check"><input type="checkbox" data-layer="contours"> <span data-i18n="layer.contours"></span></label>
+          <label class="check"><input type="checkbox" data-layer="roads"> <span data-i18n="layer.roads"></span></label>
+          <label class="check"><input type="checkbox" data-layer="buildings"> <span data-i18n="layer.buildings"></span></label>
+          <label class="check"><input type="checkbox" data-layer="markers"> <span data-i18n="layer.markers"></span></label>
+        </section>
+        <section class="box">
+          <h3 data-i18n="units.title"></h3>
+          <label class="check"><input type="checkbox" data-layer="units"> <span data-i18n="layer.units"></span></label>
+          <label class="check"><input type="checkbox" data-layer="labels"> <span data-i18n="layer.labels"></span></label>
+          <label class="check"><input type="checkbox" data-layer="aiNames"> <span data-i18n="layer.aiNames"></span></label>
+          <label class="check"><input type="checkbox" data-layer="groups"> <span data-i18n="layer.groups"></span></label>
+          <label class="check"><input type="checkbox" data-layer="health"> <span data-i18n="layer.health"></span></label>
+          <div id="allsides-gate" hidden>
+            <label class="check"><input type="checkbox" id="all-sides"> <span data-i18n="allsides.option"></span></label>
+            <p id="all-sides-status" class="muted small"></p>
+          </div>
+          <label class="check"><input type="checkbox" data-layer="empty"> <span data-i18n="layer.empty"></span></label>
+          <label class="check"><input type="checkbox" data-layer="civ"> <span data-i18n="layer.civ"></span></label>
+          <label class="check"><input type="checkbox" data-layer="facing"> <span data-i18n="layer.facing"></span></label>
+          <label class="check"><input type="checkbox" data-layer="cones"> <span data-i18n="layer.cones"></span></label>
+          <label class="check"><input type="checkbox" data-layer="smooth"> <span data-i18n="layer.smooth"></span></label>
+        </section>
+        <section class="box">
+          <h3 data-i18n="camf.title"></h3>
+          <label class="check"><input type="checkbox" data-layer="camera"> <span data-i18n="layer.camera"></span></label>
+          <p class="muted small" data-i18n="camf.help"></p>
+        </section>
+        <section class="box">
+          <h3 data-i18n="s3d.title"></h3>
+          <label class="check"><input type="checkbox" data-layer="models3d"> <span data-i18n="layer.models3d"></span></label>
+          <label class="check"><input type="checkbox" data-layer="models3dScale"> <span data-i18n="layer.models3dScale"></span></label>
+          <label class="check"><input type="checkbox" data-layer="buildings3d"> <span data-i18n="layer.buildings3d"></span></label>
+        </section>
+        <section class="box">
+          <h3 data-i18n="ui.title"></h3>
+          <label class="check"><input type="checkbox" data-layer="camera"> <span data-i18n="layer.camera"></span></label>
+          <label class="field"><span data-i18n="size.icons"></span>
+            <span class="range-row"><input id="icon-size" type="range" min="0.6" max="2.5" step="0.1"><output id="icon-size-val" dir="ltr"></output></span>
+          </label>
+          <label class="field"><span data-i18n="size.compass"></span>
+            <span class="range-row"><input id="compass-size" type="range" min="0.6" max="2" step="0.1"><output id="compass-size-val" dir="ltr"></output>
+              <button id="compass-reset" class="btn small-btn" type="button" data-i18n="size.compass_reset"></button></span>
+          </label>
+          <label class="check"><input type="checkbox" data-layer="compass"> <span data-i18n="layer.compass"></span></label>
+          <label class="check"><input type="checkbox" data-layer="tools"> <span data-i18n="layer.tools"></span></label>
+          <label class="check"><input type="checkbox" data-layer="cursor"> <span data-i18n="layer.cursor"></span></label>
+          <label class="check"><input type="checkbox" data-layer="hint"> <span data-i18n="layer.hint"></span></label>
+        </section>
+        <section class="box">
+          <h3 data-i18n="wake.title"></h3>
+          <label class="check"><input type="checkbox" id="chk-wake"> <span data-i18n="wake.option"></span></label>
+          <p id="wake-status" class="muted small" aria-live="polite"></p>
+        </section>
+        <section class="box">
+          <h3 data-i18n="move.title"></h3>
+          <label class="check"><input type="checkbox" id="chk-tools-move"> <span data-i18n="move.tools"></span></label>
+          <label class="check"><input type="checkbox" id="chk-view-move"> <span data-i18n="move.view"></span></label>
+          <button id="move-reset" class="btn small-btn" type="button" data-i18n="move.reset"></button>
+          <p class="muted small" data-i18n="move.help"></p>
+        </section>
+      </div>
+    </aside>
+
+    <div id="map-wrap">
+      <canvas id="gl" hidden></canvas>
+      <canvas id="map"></canvas>
+      <div id="float-bar" class="float-bar" hidden>
+        <button id="btn-showbar" class="icon-btn" data-i18n-title="bar.show" data-i18n-aria="bar.show">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <button id="btn-full2" class="icon-btn" data-i18n-title="full.toggle" data-i18n-aria="full.toggle">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+        </button>
+      </div>
+      <div id="allsides-badge" class="allsides-badge" hidden data-i18n="allsides.badge"></div>
+      <div id="stale-badge" class="stale-badge" role="status" hidden></div>
+      <div id="banner" class="banner" hidden></div>
+      <div id="cam-hud" class="cam-hud" hidden>
+        <div class="cam-top">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="13" height="10" rx="2"/><path d="M16 11l5-3v8l-5-3z"/></svg>
+          <select id="cam-select" data-i18n-aria="cam.select"></select>
+          <div class="seg small" id="cam-src">
+            <button data-src="map" data-i18n="cam.src_map"></button>
+            <button data-src="game" data-i18n="cam.src_game"></button>
+          </div>
+          <span id="cam-info" class="cam-info" dir="ltr"></span>
+          <span class="spacer"></span>
+          <button id="cam-reset" class="btn small-btn" type="button" data-i18n="cam.reset"></button>
+          <button id="cam-pop" class="icon-btn" type="button" data-i18n-title="info.camera_window" data-i18n-aria="info.camera_window">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+          </button>
+          <button id="cam-close" class="icon-btn" type="button" data-i18n-title="cam.close" data-i18n-aria="cam.close">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>
+        <p class="cam-note" id="cam-note"></p>
+      </div>
+      <img id="cam-stream" class="cam-stream" alt="" hidden>
+      <div id="tools" class="tools">
+        <button class="dock-grip" id="tools-grip" type="button" data-i18n-title="dock.move" data-i18n-aria="dock.move">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><circle cx="9" cy="6" r="1.4"/><circle cx="15" cy="6" r="1.4"/><circle cx="9" cy="12" r="1.4"/><circle cx="15" cy="12" r="1.4"/><circle cx="9" cy="18" r="1.4"/><circle cx="15" cy="18" r="1.4"/></svg>
+        </button>
+        <button class="dock-arrow" id="tools-arrow" type="button" data-i18n-title="dock.toggle" data-i18n-aria="dock.toggle">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+        <button data-tool="select" class="icon-btn active" data-i18n-title="tools.select" data-i18n-aria="tools.select">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 3l14 8-6 2-3 6z"/></svg>
+        </button>
+        <button data-tool="marker" class="icon-btn" data-i18n-title="tools.marker" data-i18n-aria="tools.marker">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-6-6.2-6-11a6 6 0 0 1 12 0c0 4.8-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg>
+        </button>
+        <button data-tool="line" class="icon-btn" data-i18n-title="tools.line" data-i18n-aria="tools.line">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 18l6-8 4 5 6-9"/></svg>
+        </button>
+        <button data-tool="text" class="icon-btn" data-i18n-title="tools.text" data-i18n-aria="tools.text">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 6V4h14v2M12 4v16M9 20h6"/></svg>
+        </button>
+      </div>
+      <div id="line-bar" class="line-bar" hidden>
+        <span id="line-count"></span>
+        <button id="line-undo" class="btn small-btn" type="button" data-i18n="tools.undo"></button>
+        <button id="line-cancel" class="btn small-btn" type="button" data-i18n="dlg.cancel"></button>
+        <button id="line-done" class="btn small-btn primary" type="button" data-i18n="tools.done"></button>
+      </div>
+      <div id="info" class="info" hidden></div>
+      <div id="detail" class="detail" hidden></div>
+      <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+      <div id="map-ctl" class="map-ctl" role="group" data-i18n-aria="mapctl.group">
+        <div id="hint" class="hint"></div>
+        <span id="cursor-grid" class="grid-readout" dir="ltr" aria-live="off"></span>
+        <div class="map-ctl-row">
+          <span id="follow-who" class="follow-who" hidden></span>
+          <button id="btn-follow" class="map-btn" type="button" aria-pressed="false" data-i18n-title="follow" data-i18n-aria="follow">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l7 19-7-4-7 4z"/></svg>
+          </button>
+          <button id="btn-me" class="map-btn" type="button" data-i18n-title="center_me" data-i18n-aria="center_me">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <aside id="arty" class="arty" hidden></aside>
+  </div>
+</div>
+
+<div id="ws-menu" class="ws-pop" role="menu" hidden></div>
+
+<dialog id="dlg-marker">
+  <form method="dialog" id="form-marker">
+    <h2 id="dlg-title" data-i18n="dlg.title"></h2>
+    <p id="mk-grid" class="muted" dir="ltr"></p>
+    <div class="row" id="mk-type-row">
+      <canvas id="mk-preview" width="56" height="56"></canvas>
+      <label class="field grow"><span data-i18n="dlg.type"></span>
+        <select id="mk-type"></select>
+      </label>
+    </div>
+    <label class="field"><span data-i18n="dlg.color"></span>
+      <select id="mk-color"></select>
+    </label>
+    <label class="field" id="mk-text-field"><span data-i18n="dlg.text"></span>
+      <input id="mk-text" type="text" maxlength="200" autocomplete="off" dir="auto">
+    </label>
+    <label class="field"><span data-i18n="dlg.channel"></span>
+      <select id="mk-channel">
+        <option value="0" data-i18n="ch.0"></option>
+        <option value="1" data-i18n="ch.1" selected></option>
+        <option value="2" data-i18n="ch.2"></option>
+        <option value="3" data-i18n="ch.3"></option>
+        <option value="4" data-i18n="ch.4"></option>
+        <option value="5" data-i18n="ch.5"></option>
+      </select>
+    </label>
+    <div class="actions">
+      <button value="cancel" class="btn" formnovalidate data-i18n="dlg.cancel"></button>
+      <button value="ok" class="btn primary" data-i18n="dlg.ok"></button>
+    </div>
+  </form>
+</dialog>
+
+<script src="i18n.js"></script>
+<script src="view3d.js"></script>
+<script src="ballistics.js"></script>
+<script src="workspace.js"></script>
+<script src="artillery.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
